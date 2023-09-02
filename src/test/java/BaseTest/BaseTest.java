@@ -20,6 +20,7 @@ public class BaseTest {
         driver = new EdgeDriver(getEdgeOptions());
         driver.manage().window().maximize();
         driver.get("https://market.yandex.ru/");
+        // для обхода капчи
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
         HomePage = new HomePage(driver);
     }

@@ -21,11 +21,13 @@ import org.openqa.selenium.WebDriver;
         public String checkSelectedProduct2(){
             return driver.findElement(selectedProduct2).getText();
         }
-        public String checkSelectedProduct1Price(){
-            return driver.findElement(selectedProduct1Price).getText();
+        public Integer checkSelectedProduct1Price(){
+            String cleanPriceString = driver.findElement(selectedProduct1Price).getText().replaceAll("[^0-9]", "");
+            return Integer.valueOf(cleanPriceString);
         }
-        public String checkSelectedProduct2Price(){
-            return driver.findElement(selectedProduct2Price).getText();
+        public Integer checkSelectedProduct2Price(){
+            String cleanPriceString = driver.findElement(selectedProduct2Price).getText().replaceAll("[^0-9]", "");
+            return Integer.valueOf(cleanPriceString);
         }
 
         // 1. Удалить товар производителя «Whiskas» из сравнения
