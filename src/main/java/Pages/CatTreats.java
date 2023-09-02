@@ -7,61 +7,65 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
-    public class CatTreats {
-        private WebDriver driver;
-        private WebDriverWait wait;
-        private By minPriceLoc = By.cssSelector("[data-auto='filter-range-min']");
-        private By maxPriceLoc = By.cssSelector("[data-auto='filter-range-max']");
-        private By courierDelivery = By.cssSelector("[data-filter-value-id='offer-shipping_delivery']");
-        private By showMoreManufacturer = By.xpath("(//div[@data-baobab-name='showMoreFilters']");
-        private By getManufacturerInput = By.cssSelector("[data-zone-name='filterSearchValueField']");
-        private By firstListElement= By.xpath("//label[contains(@data-auto, 'filter-list-item')]");
-        private By catProduct1 = By.xpath("[data-autotest-id='product-snippet']");
-        private By catProduct2= By.xpath("(//article[@data-autotest-id='product-snippet'])[2]");
-        public CatTreats(WebDriver driver){
-            this.driver =driver;
-            this.wait = new WebDriverWait(driver, Duration.ofSeconds(20));
-        }
-        public void set1ProductFilters(String minPrice, String maxPrice, String firstManufacturer) {
-            setPriceInputValue(minPriceLoc, minPrice);
-            setPriceInputValue(maxPriceLoc, maxPrice);
-            clickElement(courierDelivery);
-            clickElement(showMoreManufacturer);
-            setInputValueManufacturer(firstManufacturer);
-            clickElement(firstListElement);
-        }
+public class CatTreats {
+    private WebDriver driver;
+    private WebDriverWait wait;
+    private By minPriceLoc = By.xpath("//input[contains(@id, 'range-filter-field-glprice')]");
+    private By maxPriceLoc = By.xpath("(//input[contains(@id, 'range-filter-field-glprice')])[2]");
+    private By courierDelivery = By.cssSelector("[data-filter-value-id='offer-shipping_delivery']");
+    private By showMoreManufacturer = By.xpath("//div[@data-baobab-name='showMoreFilters']");
+    private By getManufacturerInput = By.xpath("//input[contains(@id,'textfield')]");
+    private By firstListElement = By.xpath("//label[contains(@data-auto, 'filter-list-item')]");
+    private By catProduct1 = By.cssSelector("[data-autotest-id='product-snippet']");
+    private By catProduct2 = By.xpath("(//article[@data-autotest-id='product-snippet'])[2]");
 
-        public CatProduct1Page selectCat1Product() {
-            clickElement(catProduct1);
-            return new CatProduct1Page(driver);
-        }
+    public CatTreats(WebDriver driver) {
+        this.driver = driver;
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+    }
 
-        public CatProduct2Page selectCat2Product() {
-            clear1Input();
-            setInputValueManufacturer("Мнямс");
-            clickElement(firstListElement);
-            clickElement(catProduct2);
-            return new CatProduct2Page(driver);
-        }
+    public void set1ProductFilters(String minPrice, String maxPrice, String firstManufacturer) {
+        setPriceInputValue(minPriceLoc, minPrice);
+        setPriceInputValue(maxPriceLoc, maxPrice);
+        retryingClick(courierDelivery);
+        retryingClick(showMoreManufacturer);
+        setInputValueManufacturer(firstManufacturer);
+        retryingClick(firstListElement);
+    }
 
-        public void clear1Input() {
-            clickElement(firstListElement);
-            driver.findElement(getManufacturerInput).clear();
-        }
+    public CatProduct1Page selectCat1Product() {
+        retryingClick(catProduct1);
+        return new CatProduct1Page(driver);
+    }
 
-        private void clickElement(By elementLocator) {
-            wait.until(ExpectedConditions.elementToBeClickable(elementLocator));
-            driver.findElement(elementLocator).click();
-        }
+    public CatProduct2Page selectCat2Product() {
+        retryingClick(firstListElement);
+        driver.findElement(getManufacturerInput).clear();
+        setInputValueManufacturer("Мнямс");
+        retryingClick(firstListElement);
+        retryingClick(catProduct2);
+        return new CatProduct2Page(driver);
+    }
 
-        private void setPriceInputValue(By inputLocator, String value) {
-            wait.until(ExpectedConditions.presenceOfElementLocated(inputLocator));
-            driver.findElement(inputLocator).sendKeys(value);
-        }
+    public void retryingClick(By elementLocator) {
+        int maxAttempts = 3;
 
-        private void setInputValueManufacturer(String value) {
-            wait.until(ExpectedConditions.presenceOfElementLocated(getManufacturerInput));
-            driver.findElement(getManufacturerInput).sendKeys(value);
-            wait.until(ExpectedConditions.presenceOfElementLocated(firstListElement));
+        for (int attempts = 0; attempts < maxAttempts; attempts++) {
+            try {
+                wait.until(ExpectedConditions.elementToBeClickable(elementLocator)).click();
+                break;
+            } catch (org.openqa.selenium.StaleElementReferenceException e) {
+            }
         }
     }
+
+    private void setPriceInputValue(By inputLocator, String value) {
+        wait.until(ExpectedConditions.visibilityOfElementLocated(inputLocator));
+        driver.findElement(inputLocator).sendKeys(value);
+    }
+
+    private void setInputValueManufacturer(String value) {
+        wait.until(ExpectedConditions.visibilityOfElementLocated(getManufacturerInput));
+        driver.findElement(getManufacturerInput).sendKeys(value);
+    }
+}

@@ -1,0 +1,1 @@
+{"uuid":"a7d45d63-ae36-4302-962a-43cc050e4423","name":"ITFBGroup_TestAssignment","children":["dd1c3e16-cdb0-455e-a11e-0df9babe1b03"],"befores":[{"name":"setUp","status":"passed","stage":"finished","description":"","steps":[],"attachments":[],"parameters":[],"start":1693638002277,"stop":1693638014003}],"afters":[],"start":1693638002254,"stop":1693638086785}

@@ -12,6 +12,7 @@ public class CatProduct1Page {
     }
     public void addToCompareList(){
         driver.findElement(compareButton).click();
+        driver.close();
     }
     public String getProduct1Name(){
         return driver.findElement(productName).getText();
