@@ -5,6 +5,7 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeTest;
 import Utils.WindowManager;
 
@@ -23,6 +24,10 @@ public class BaseTest {
         // для обхода капчи
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
         HomePage = new HomePage(driver);
+    }
+    @AfterClass
+    public void tearDown(){
+        driver.quit();
     }
 
     private EdgeOptions getEdgeOptions() {

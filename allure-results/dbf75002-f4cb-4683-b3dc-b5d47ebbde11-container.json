@@ -1,0 +1,1 @@
+{"uuid":"dbf75002-f4cb-4683-b3dc-b5d47ebbde11","name":"Tests.CatProductsComparisonTest","children":["12e3a407-9e2e-4156-9fbb-5f9feac13b03"],"befores":[],"afters":[{"name":"tearDown","status":"passed","stage":"finished","description":"","steps":[],"attachments":[],"parameters":[],"start":1693710569557,"stop":1693710570104}],"start":1693710529589,"stop":1693710570130}
